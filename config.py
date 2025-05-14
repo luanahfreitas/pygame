@@ -30,6 +30,10 @@ MIRTILO_HEIGHT = 30
 FACA_WIDTH = 20
 FACA_HEIGHT = 40
 
+#bomba
+BOMBA_WIDTH = 60
+BOMBA_HEIGHT = 60
+
 #FONTE
 FONT_TITLE = pygame.font.SysFont(None, 80)
 FONT_BUTTON = pygame.font.SysFont(None, 40)
@@ -39,6 +43,7 @@ FONT_BUTTON = pygame.font.SysFont(None, 40)
 BASE_DIR = path.dirname(__file__)
 IMG_DIR = path.join(path.dirname(__file__), 'assets', 'img')
 SND_DIR = path.join(path.dirname(__file__), 'assets', 'snd')
+FONT_DIR = path.join(path.dirname(__file__), 'assets', 'font')
 
 
 GAME = 1
