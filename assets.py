@@ -12,7 +12,6 @@ def load_assets():
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
 
-
     mirtilo = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo.png')).convert()
     assets['mirtilo'] = pygame.transform.scale(mirtilo, (MIRTILO_WIDTH, MIRTILO_HEIGHT))
 
@@ -21,9 +20,9 @@ def load_assets():
 
     faca = pygame.image.load(os.path.join(IMG_DIR, 'faca.png')).convert()
     assets['faca'] = pygame.transform.scale(faca, (FACA_WIDTH, FACA_HEIGHT))
-
-    #PEGAR IMAGEM DE BOMBA
-
+    
+    bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.png')).convert()
+    assets['bomba'] = pygame.transform.scale(bomba, (BOMBA_WIDTH, BOMBA_HEIGHT))
     
     #animações(explosão)
     explosion_anim = []
@@ -37,15 +36,16 @@ def load_assets():
 
 
     #fonts
-    assets['score_font'] = pygame.font.SysFont('Arial', 28)
-    assets['gameover_font'] = pygame.font.SysFont('Arial', 50)
-    assets['restart_font'] = pygame.font.SysFont('Arial', 30)
+    assets['titulo_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'titulo.ttf'), 80)
+    assets['gameover_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'gameover.ttf'), 80)
+    assets['padrao_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'padrao.ttf'), 40)
+    
 
     #sons
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
     assets['faca_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'faca.wav'))
 
-    #pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
-    #pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.load('assets/snd/musica.mp3')
+    pygame.mixer.music.set_volume(0.4)
 
     return assets

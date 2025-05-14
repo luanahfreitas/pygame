@@ -6,7 +6,7 @@ pygame.init()
 def init_screen(screen):
     clock = pygame.time.Clock()
 
-    background = pygame.image.load(path.join(IMG_DIR, 'tela_init.png')).convert()
+    background = pygame.image.load(path.join(IMG_DIR, 'fundo.jpeg')).convert()
     background_rect = background.get_rect()
 
     botoes = {
@@ -41,7 +41,7 @@ def init_screen(screen):
         screen.blit(background, background_rect)
 
         for dificuldade, rect in botoes.items():
-            pygame.draw.rect(screen, (0, 128, 0), rect)  # Cor verde para os botões
+            pygame.draw.rect(screen, (0, 0, 0), rect)  # Cor branca para os botões
             texto_render = font.render(dificuldade, True, BLACK)
             screen.blit(texto_render,(rect.x + (rect.width - texto_render.get_width()) // 2, rect.y + (rect.height - texto_render.get_height()) // 2))
 

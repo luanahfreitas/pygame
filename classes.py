@@ -48,14 +48,14 @@ class FRUTAS(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.kill()
     
-# class Bomba(pygame.sprite.Sprite):
-#     def __init__(self, assets['bomba']):
-#         pygame.sprite.Sprite.__init__(self)
-#         self.image = assets['bomba']
-#         self.rect = self.image.get_rect(midtop=(random.randint(30, WIDTH - 40), -50))
-#         self.speed = 3
+class Bomba(pygame.sprite.Sprite):
+    def __init__(self, assets):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = assets['bomba']
+        self.rect = self.image.get_rect(midtop=(random.randint(30, WIDTH - 40), -50))
+        self.speed = 3
 
-#     def update(self):
-#         self.rect.y += self.speed
-#         if self.rect.top > HEIGHT:
-#             self.kill()
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.top > HEIGHT:
+            self.kill()
