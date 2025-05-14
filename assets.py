@@ -38,7 +38,8 @@ def load_assets():
 
     #fonts
     assets['score_font'] = pygame.font.SysFont('Arial', 28)
-
+    assets['gameover_font'] = pygame.font.SysFont('Arial', 50)
+    assets['restart_font'] = pygame.font.SysFont('Arial', 30)
 
     #sons
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
