@@ -46,9 +46,10 @@ SND_DIR = path.join(path.dirname(__file__), 'assets', 'snd')
 FONT_DIR = path.join(path.dirname(__file__), 'assets', 'font')
 
 
-GAME = 1
+ON = 1
 QUIT = 0
 EASY = 2
 MEDIUM = 3
 HARD = 4
-OVER = 5
+DONE = 5
+
