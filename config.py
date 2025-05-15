@@ -34,10 +34,6 @@ FACA_HEIGHT = 40
 BOMBA_WIDTH = 60
 BOMBA_HEIGHT = 60
 
-#FONTE
-FONT_TITLE = pygame.font.SysFont(None, 80)
-FONT_BUTTON = pygame.font.SysFont(None, 40)
-
 
 #IMAGENS
 BASE_DIR = path.dirname(__file__)
