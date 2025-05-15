@@ -5,11 +5,11 @@ import random
 from classes import *
 
 def tela_jogo(screen,dificuldade,assets):
-    clock = pygame.time.clock
+    clock = pygame.time.Clock
     tempo_inicio = pygame.time.get_ticks()
     
     load = load_assets()
-    fonte_score = assets['score_font']
+    #fonte_score = assets['score_font']
 
     facas = pygame.sprite.Group()
     bombas = pygame.sprite.Group()
