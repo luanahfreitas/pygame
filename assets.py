@@ -7,12 +7,12 @@ def load_assets():
     assets = {}
 
     #imagens
-    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'tela_init.jpg')).convert()
+    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
 
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
 
-    mirtilo = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo.png')).convert()
+    mirtilo = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo.webp')).convert()
     assets['mirtilo'] = pygame.transform.scale(mirtilo, (MIRTILO_WIDTH, MIRTILO_HEIGHT))
 
     pessego = pygame.image.load(os.path.join(IMG_DIR, 'pessego.png')).convert()
@@ -21,7 +21,7 @@ def load_assets():
     faca = pygame.image.load(os.path.join(IMG_DIR, 'faca.png')).convert()
     assets['faca'] = pygame.transform.scale(faca, (FACA_WIDTH, FACA_HEIGHT))
     
-    bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.png')).convert()
+    bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.webp')).convert()
     assets['bomba'] = pygame.transform.scale(bomba, (BOMBA_WIDTH, BOMBA_HEIGHT))
     
     #animações(explosão)
@@ -45,7 +45,7 @@ def load_assets():
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
     assets['faca_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'faca.wav'))
     #adicionar pew
-    
+
 
     pygame.mixer.music.load('assets/snd/musica.mp3')
     pygame.mixer.music.set_volume(0.4)
