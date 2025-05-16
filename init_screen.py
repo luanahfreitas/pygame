@@ -1,6 +1,7 @@
 import pygame
 from assets import *
 from config import *
+from assets import load_assets
 
 pygame.init()
 

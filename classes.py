@@ -3,11 +3,11 @@ import random
 from assets import *
 from config import *
 
-class FACA(pygame.sprite.Sprite):
+class Faca(pygame.sprite.Sprite):
     def __init__(self, x, y, assets):
         pygame.sprite.Sprite.__init__(self)
         self.image = assets['faca']
-        self.rect = self.image.get_rect(midbottom=(WIDTH // 2, HEIGHT - 10))
+        self.rect = self.image.get_rect(midbottom=(x, y))
         self.speed_y = 0  
         self.speed_x = 7  
         self.lancada = False  
@@ -36,7 +36,7 @@ class FACA(pygame.sprite.Sprite):
             self.speed_y = -10
     
 
-class FRUTAS(pygame.sprite.Sprite):
+class Frutas(pygame.sprite.Sprite):
     def __init__(self, imagem_fruta):
         pygame.sprite.Sprite.__init__(self)
         self.image = imagem_fruta

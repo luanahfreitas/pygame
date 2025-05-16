@@ -1,22 +1,21 @@
 import pygame
-import assets
 from config import *
 from init_screen import *
 from game import *
-from assets import *
+from assets import load_assets
 
 pygame.init()
 pygame.mixer.init()
 
-
-
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("desFRUTANDO")
+
+assets = load_assets()
 
 jogando = True 
 
 while jogando:
-    state = init_screen(screen,load_assets)
+    state = init_screen(screen,assets)
     if state in [EASY,MEDIUM,HARD]:
         pontos = tela_jogo(screen,state,assets)
         #game over

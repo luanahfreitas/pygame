@@ -1,21 +1,23 @@
 import pygame
+from assets import load_assets
 from config import *
-from assets import *
 import random
-from classes import *
+from classes import Faca, Frutas, Bomba
+
+print("Faca está definida como:", Faca)
 
 def tela_jogo(screen,dificuldade,assets):
-    clock = pygame.time.Clock
+    clock = pygame.time.Clock()
     tempo_inicio = pygame.time.get_ticks()
+    assets = load_assets()
     
-    load = load_assets()
-    #fonte_score = assets['score_font']
+    fonte = assets['padrao_font']
 
     facas = pygame.sprite.Group()
     bombas = pygame.sprite.Group()
     frutas = pygame.sprite.Group()
 
-    faca_atual = FACA(assets['faca'])
+    faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
     facas.add(faca_atual)
 
     if dificuldade == EASY:
@@ -50,29 +52,38 @@ def tela_jogo(screen,dificuldade,assets):
                 faca.update(None)
 
         if len(facas) == 0:
-            faca_atual = FACA(assets['faca'])
+            faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
             facas.add(faca_atual)
 
         
         if random.randint(1,50) == 1:
-            frutas.add(imagem_fruta)
+            frutas.add(Frutas(imagem_fruta[0]))
 
         if tempo_passado > 15 and random.randint(1,80) == 1:
-            bombas.add(Bomba(assets['bomba']))
+            bombas.add(Bomba(assets))
 
 
         frutas.update()
         bombas.update()
 
         #colisões
-        if pygame.sprite.groupcolisoes(facas,frutas,True,True):
+        if pygame.sprite.groupcollide(facas,frutas,True,True):
             pontos += 5
             assets['faca_sound'].play()
 
-        if pygame.sprite.groupcolisoes(facas,bombas,True,False):
+        if pygame.sprite.groupcollide(facas,bombas,True,False):
             assets['explosion_sound'].play()
             explodir_tela(screen,assets)
             return pontos
+        
+        screen.fill(BLACK)
+        frutas.draw(screen)
+        bombas.draw(screen)
+        facas.draw(screen)
+
+        texto = fonte.render(f"Pontos: {pontos}", True, WHITE)
+        screen.blit(texto, (10, 10))
+        pygame.display.flip()
 
 def explodir_tela(screen,assets):
     animacao = assets['explosion_anim']
