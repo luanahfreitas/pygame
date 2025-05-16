@@ -9,14 +9,16 @@ def init_screen(screen,assets):
     assets = load_assets()
 
     background = pygame.image.load(path.join(IMG_DIR, 'fundo.jpeg')).convert()
+    background = pygame.transform.scale(background, (WIDTH, HEIGHT))  #ajustando iamgem de fundo as configurações da tela
+
+    font_titulo = assets['titulo_font']
+    font = assets['padrao_font']
 
     botoes = {
-        "Fácil": pygame.Rect(300, 250, 200, 50),
-        "Médio": pygame.Rect(300, 320, 200, 50),
-        "Difícil": pygame.Rect(300, 390, 200, 50)
+        "Fácil": pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 50),
+        "Médio": pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 20, 200, 50),
+        "Difícil": pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 90, 200, 50)
     }
-    
-    font = assets['padrao_font']
 
     game_on = True
     while game_on:
@@ -42,10 +44,17 @@ def init_screen(screen,assets):
         screen.fill(BLACK)
         screen.blit(background, (0,0))
 
+        #titulo
+        titulo_text = font_titulo.render("desFRUTANDO", True, WHITE)
+        titulo_rect = titulo_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+        screen.blit(titulo_text, titulo_rect)
+
+        #ajuste dos botões
         for dificuldade, rect in botoes.items():
             pygame.draw.rect(screen,WHITE,rect)    # Cor branca para os botões
             texto = font.render(dificuldade, True, BLACK)
-            screen.blit(texto,(rect.x + (rect.width - texto.get_width()) // 2, rect.y + (rect.height - texto.get_height()) // 2))
+            texto_rect = texto.get_rect(center=rect.center)
+            screen.blit(texto, texto_rect)
 
         pygame.display.flip()
 
