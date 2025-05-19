@@ -9,7 +9,12 @@ def load_assets():
     #imagens(frutas, faca, bomba, fundos)
     assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
 
-    #adicionar background de cada dificuldade
+    assets['fundo melancia'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo melancia.webp')).convert()
+    assets['fundo pessego'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo pessego.jpg')).convert()
+    assets['fundo mirtilo'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo mirtilo.jpg')).convert()
+
+
+
 
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
