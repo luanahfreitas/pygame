@@ -21,10 +21,13 @@ def tela_jogo(screen,dificuldade,assets):
 
     if dificuldade == EASY:
         imagem_fruta = [assets['melancia']]
+        imagem_fundo = assets['fundo melancia']
     elif dificuldade == MEDIUM:
         imagem_fruta = [assets['pessego']]
+        imagem_fundo = assets['fundo pessego']
     elif dificuldade == HARD:
         imagem_fruta = [assets['mirtilo']]
+        imagem_fundo = assets['fundo mirtilo']
 
     pontos = 0
     state = ON
@@ -75,7 +78,7 @@ def tela_jogo(screen,dificuldade,assets):
             explodir_tela(screen,assets)
             return pontos
         
-        screen.fill(BLACK)
+        screen.fill(imagem_fundo, (0,0))
         frutas.draw(screen)
         bombas.draw(screen)
         facas.draw(screen)
