@@ -9,7 +9,6 @@ print("Faca está definida como:", Faca)
 def tela_jogo(screen,dificuldade,assets):
     clock = pygame.time.Clock()
     tempo_inicio = pygame.time.get_ticks()
-    assets = load_assets()
     
     fonte = assets['padrao_font']
 

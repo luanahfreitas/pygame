@@ -6,8 +6,10 @@ from config import *
 def load_assets():
     assets = {}
 
-    #imagens
+    #imagens(frutas, faca, bomba, fundos)
     assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
+
+    #adicionar background de cada dificuldade
 
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
@@ -47,7 +49,7 @@ def load_assets():
     #adicionar pew
 
 
-    pygame.mixer.music.load('assets/snd/musica.mp3')
-    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.load(os.path.join(SND_DIR, 'musica.mp3'))
+    pygame.mixer.music.set_volume(0.3)
 
     return assets
