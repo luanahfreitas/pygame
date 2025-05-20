@@ -2,7 +2,7 @@ import pygame
 from assets import load_assets
 from config import *
 import random
-from classes import Faca, Frutas, Bomba, Particula
+from classes import Faca, Fruta, Bomba, Particula
 
 
 def tela_jogo(screen,dificuldade,assets):
@@ -24,13 +24,13 @@ def tela_jogo(screen,dificuldade,assets):
 
     if dificuldade == EASY:
         imagem_fruta = assets['melancia']
-        imagem_fundo = assets['fundo melancia']
+        imagem_fundo = assets['facil']
     elif dificuldade == MEDIUM:
         imagem_fruta = assets['pessego']
-        imagem_fundo = assets['fundo pessego']
+        imagem_fundo = assets['medio']
     elif dificuldade == HARD:
         imagem_fruta = assets['mirtilo']
-        imagem_fundo = assets['fundo mirtilo']
+        imagem_fundo = assets['dificil']
 
     pontos = 0
     state = ON
@@ -43,9 +43,17 @@ def tela_jogo(screen,dificuldade,assets):
     bonus_timer = 0
     FPS_padrao = 60
 
+    #controladores de tempo
+    tempo_ultima_fruta = pygame.time.get_ticks()
+    intervalo_fruta = 1200  # 1 fruta a cada 1.2 segundos
+
+    tempo_ultima_bomba = pygame.time.get_ticks()
+    intervalo_bomba = 4000  # bomba só pode cair a cada 4 segundos
+
     while state != DONE:
         clock.tick(FPS_padrao)
-        tempo_passado = (pygame.time.get_ticks() - tempo_inicio) / 1000
+        tempo_atual = pygame.time.get_ticks()
+        tempo_passado = (tempo_atual - tempo_inicio) / 1000
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -68,16 +76,22 @@ def tela_jogo(screen,dificuldade,assets):
             faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
             facas.add(faca_atual)
         
-        r = random.randint(1, 100)
-        if r <= 5:
-            frutas.add(Frutas(assets['fruta_dourada'], tipo='dourada'))
-        elif r <= 10:
-            frutas.add(Frutas(assets['fruta_congelada'], tipo='congelada'))
-        elif r <= 50:
-            frutas.add(Frutas(imagem_fruta, tipo='normal'))
+        #frutas com intervalo de tempo
+        if tempo_atual - tempo_ultima_fruta > intervalo_fruta:
+            r = random.randint(1, 100)
+            if r <= 5:
+                frutas.add(Fruta(assets['dourada'], tipo='dourada'))
+            elif r <= 10:
+                frutas.add(Fruta(assets['gelo'], tipo='congelada'))
+            else:
+                frutas.add(Fruta(imagem_fruta, tipo='normal'))
+            tempo_ultima_fruta = tempo_atual
 
-        if tempo_passado > 15 and random.randint(1,80) == 1:
-            bombas.add(Bomba(assets))
+        #bombas - só depois de 15s
+        if tempo_passado > 15 and tempo_atual - tempo_ultima_bomba > intervalo_bomba:
+            if random.randint(1, 100) <= 10:
+                bombas.add(Bomba(assets))
+                tempo_ultima_bomba = tempo_atual
 
 
         frutas.update()
@@ -94,13 +108,13 @@ def tela_jogo(screen,dificuldade,assets):
                 if vidas <= 0:
                     pygame.mixer.music.stop()
                     fade_out(screen)
-                    explodir_tela(screen, assets)
+                    shake_screen(screen)
                     return pontos
 
         #colisões - faca com a fruta
         colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
-        for faca, frutas in colisoes.items():
-            for fruta in frutas:
+        for faca, frutas_colididas in colisoes.items():
+            for fruta in frutas_colididas:
                 if fruta.tipo == 'dourada':
                     for _ in range(20):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 215, 0)))  # dourado
@@ -130,7 +144,6 @@ def tela_jogo(screen,dificuldade,assets):
             pygame.mixer.music.stop()
             shake_screen(screen)
             fade_out(screen)
-            explodir_tela(screen,assets)
             return pontos
         
         screen.blit(imagem_fundo, (0,0))
@@ -164,17 +177,6 @@ def tela_jogo(screen,dificuldade,assets):
         
         pygame.display.flip()
         
-
-def explodir_tela(screen,assets):
-    animacao = assets['explosion_anim']
-    x = (WIDTH - 32) // 2
-    y = (HEIGHT - 32) // 2
-
-    for frame in animacao:
-        screen.fill(BLACK)
-        screen.blit(frame,(x,y))
-        pygame.display.flip()
-
 
 #fade out efeito
 def fade_out(screen, velocidade=10):

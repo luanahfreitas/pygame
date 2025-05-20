@@ -41,7 +41,7 @@ class Faca(pygame.sprite.Sprite):
             self.speed_y = -10  # velocidade de lançamento (negativa porque vai para cima)
     
 
-class Frutas(pygame.sprite.Sprite):
+class Fruta(pygame.sprite.Sprite):
     def __init__(self, imagem_fruta, tipo='normal'):
         pygame.sprite.Sprite.__init__(self)
         self.image = imagem_fruta  #imagem varia de acordo com a dificuldade selecionada
@@ -51,9 +51,7 @@ class Frutas(pygame.sprite.Sprite):
     
     def update(self):
         self.rect.y += self.speed
-        if self.rect.top > HEIGHT:
-            self.kill()
-    
+
 
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, assets):
