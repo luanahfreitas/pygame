@@ -39,6 +39,9 @@ def tela_jogo(screen,dificuldade,assets):
     pygame.mixer.music.play(-1)  # loop infinito da musica
     pygame.mixer.music.set_volume(0.3)
 
+    congelado = False
+    congelado_timer = 0
+    
     modo_bonus = False
     bonus_timer = 0
     FPS_padrao = 60
@@ -127,7 +130,9 @@ def tela_jogo(screen,dificuldade,assets):
                 elif fruta.tipo == 'congelada':
                     for _ in range(20):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (150, 200, 255)))  # azul claro
-                    FPS_padrao = max(20, FPS_padrao - 10)
+                    congelado = True
+                    congelado_timer = tempo_atual
+                    FPS_padrao = 30
                     congelar_tela(screen)
                     pontos +=5 * (2 if modo_bonus else 1)
 
