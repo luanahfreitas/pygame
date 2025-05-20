@@ -35,8 +35,12 @@ def load_assets():
     assets['vida vazia'] = pygame.transform.scale(vazio, (30, 30))
 
     #frutas especiais
-    #adicionar frutas douradas
-    #adicionar frutas congeladas
+    
+    dourada = pygame.image.load(os.path.join(IMG_DIR, 'dourada.png')).convert()
+    assets['dourada'] = pygame.transform.scale(dourada, (30, 30))
+    
+    gelo = pygame.image.load(os.path.join(IMG_DIR, 'gelo.webp')).convert()
+    assets['gelo'] = pygame.transform.scale(gelo, (30, 30))
 
     #fonts
     assets['titulo_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'titulo.ttf'), 80)
