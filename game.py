@@ -2,9 +2,8 @@ import pygame
 from assets import load_assets
 from config import *
 import random
-from classes import Faca, Frutas, Bomba
+from classes import Faca, Frutas, Bomba, Particula
 
-print("Faca está definida como:", Faca)
 
 def tela_jogo(screen,dificuldade,assets):
     clock = pygame.time.Clock()
@@ -15,6 +14,7 @@ def tela_jogo(screen,dificuldade,assets):
     facas = pygame.sprite.Group()
     bombas = pygame.sprite.Group()
     frutas = pygame.sprite.Group()
+    particulas = pygame.sprite.Group()
 
     faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
     facas.add(faca_atual)
@@ -35,6 +35,7 @@ def tela_jogo(screen,dificuldade,assets):
     while state != DONE:
         clock.tick(FPS)
         tempo_passado = (pygame.time.get_ticks() - tempo_inicio) / 1000
+        vidas = 3
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,10 +57,14 @@ def tela_jogo(screen,dificuldade,assets):
         if len(facas) == 0:
             faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
             facas.add(faca_atual)
-
         
-        if random.randint(1,50) == 1:
-            frutas.add(Frutas(imagem_fruta[0]))
+        r = random.randint(1, 100)
+        if r <= 5:
+            frutas.add(Frutas(assets['fruta_dourada'], tipo='dourada'))
+        elif r <= 10:
+            frutas.add(Frutas(assets['fruta_congelada'], tipo='congelada'))
+        elif r <= 50:
+            frutas.add(Frutas(imagem_fruta, tipo='normal'))
 
         if tempo_passado > 15 and random.randint(1,80) == 1:
             bombas.add(Bomba(assets))
@@ -68,24 +73,56 @@ def tela_jogo(screen,dificuldade,assets):
         frutas.update()
         bombas.update()
 
+        for fruta in frutas:
+            if fruta.rect.top > HEIGHT:
+                fruta.kill()
+                vidas -= 1
+                if vidas <= 0:
+                    pygame.mixer.music.stop()
+                    fade_out(screen)
+                    explodir_tela(screen, assets)
+                    return pontos
+
         #colisões
-        if pygame.sprite.groupcollide(facas,frutas,True,True):
-            pontos += 5
-            assets['faca_sound'].play()
+        colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
+        for faca, frutas in colisoes.items():
+            for fruta in frutas:
+                if fruta.tipo == 'dourada':
+                    pontos += 20
+                elif fruta.tipo == 'congelada':
+                    FPS = max(20, FPS - 10)
+                else:
+                    pontos += 5
+                assets['faca_sound'].play()
 
         if pygame.sprite.groupcollide(facas,bombas,True,False):
             assets['explosion_sound'].play()
+            pygame.mixer.music.stop()
+            shake_screen(screen)
+            fade_out(screen)
             explodir_tela(screen,assets)
             return pontos
         
-        screen.fill(imagem_fundo, (0,0))
+        screen.blit(imagem_fundo, (0,0))
+
+        #desenha os sprites na tela
         frutas.draw(screen)
+        particulas.draw(screen)
         bombas.draw(screen)
         facas.draw(screen)
 
-        texto = fonte.render(f"Pontos: {pontos}", True, WHITE)
-        screen.blit(texto, (10, 10))
+        #coloca os pontos na tela de jogo 
+        texto = fonte.render(f"Pontos: {pontos}", True, WHITE)  #cor branca
+        screen.blit(texto, (10, 10))  #tamanho do texto
         pygame.display.flip()
+
+        #desenha as vidas na tela - corações
+        for i in range(3):
+            if i < vidas:
+                screen.blit(assets['vida_cheia'], (10 + i * 35, 50))
+            else:
+                screen.blit(assets['vida_vazia'], (10 + i * 35, 50))
+            #som de perda de vida
 
 def explodir_tela(screen,assets):
     animacao = assets['explosion_anim']
@@ -96,3 +133,26 @@ def explodir_tela(screen,assets):
         screen.fill(BLACK)
         screen.blit(frame,(x,y))
         pygame.display.flip()
+
+
+#Fade out effect (ajuda de inteligencia artificial)
+def fade_out(screen, velocidade=10):
+    fade = pygame.Surface((WIDTH, HEIGHT))
+    fade.fill((0, 0, 0))
+
+    for alpha in range(0, 255, velocidade):
+        fade.set_alpha(alpha)
+        screen.blit(fade, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(30)
+
+
+#Shake effect (ajuda de inteligencia artificial)
+def shake_screen(screen, intensidade = 5, duracao = 10):
+    fundo_original = screen.copy()
+    for _ in range(duracao):
+        offset_x = random.randint(-intensidade, intensidade)
+        offset_y = random.randint(-intensidade, intensidade)
+        screen.blit(fundo_original, (offset_x, offset_y))
+        pygame.display.flip()
+        pygame.time.delay(30)

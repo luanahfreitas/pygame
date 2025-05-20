@@ -13,9 +13,6 @@ def load_assets():
     assets['fundo pessego'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo pessego.jpg')).convert()
     assets['fundo mirtilo'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo mirtilo.jpg')).convert()
 
-
-
-
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
 
@@ -30,17 +27,16 @@ def load_assets():
     
     bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.webp')).convert()
     assets['bomba'] = pygame.transform.scale(bomba, (BOMBA_WIDTH, BOMBA_HEIGHT))
-    
-    #animações(explosão)
-    explosion_anim = []
-    for i in range(9):
-        filename = f'regularExplosion0{i}.png'
-        path = os.path.join(IMG_DIR, filename)
-        img = pygame.image.load(path).convert()
-        img = pygame.transform.scale(img, (32, 32))
-        explosion_anim.append(img)
-    assets['explosion_anim'] = explosion_anim
 
+    cheio = pygame.image.load(os.path.join(IMG_DIR, 'vida cheia.png')).convert()
+    assets['vida cheia'] = pygame.transform.scale(cheio, (30, 30))
+    
+    vazio = pygame.image.load(os.path.join(IMG_DIR, 'vida vazia.png')).convert()
+    assets['vida vazia'] = pygame.transform.scale(vazio, (30, 30))
+
+    #frutas especiais
+    #adicionar frutas douradas
+    #adicionar frutas congeladas
 
     #fonts
     assets['titulo_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'titulo.ttf'), 80)
@@ -52,6 +48,7 @@ def load_assets():
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
     assets['faca_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'faca.wav'))
     #adicionar pew
+    #adicionar som de perder vida
 
 
     pygame.mixer.music.load(os.path.join(SND_DIR, 'musica.mp3'))

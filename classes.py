@@ -45,6 +45,7 @@ class Frutas(pygame.sprite.Sprite):
     def __init__(self, imagem_fruta):
         pygame.sprite.Sprite.__init__(self)
         self.image = imagem_fruta  #imagem varia de acordo com a dificuldade selecionada
+        self.tipo = tipo  #'normal', 'dourada', 'congelada'
         self.rect = self.image.get_rect(midtop=(random.randint(30, WIDTH - 40), -50))  #frutas aparecem em posições aleatórias
         self.speed = 3  #velocidade que a fruta cai
     
@@ -53,6 +54,7 @@ class Frutas(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.kill()
     
+
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, assets):
         pygame.sprite.Sprite.__init__(self)
@@ -63,4 +65,22 @@ class Bomba(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speed
         if self.rect.top > HEIGHT:
+            self.kill()
+
+
+class Particula(pygame.sprite.Sprite):
+    def __init__(self, x, y, cor):
+        super().__init__()
+        self.image = pygame.Surface((4, 4))
+        self.image.fill(cor)
+        self.rect = self.image.get_rect(center=(x, y))
+        self.speed_x = random.randint(-5, 5)
+        self.speed_y = random.randint(-5, -1)
+        self.life = 20  #quanto tempo ela dura
+
+    def update(self):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        self.life -= 1
+        if self.life <= 0:
             self.kill()
