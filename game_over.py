@@ -14,7 +14,7 @@ def game_over_screen(screen, pontos, assets):
     background = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
 
     #criação do botão de jogar Novamente
-    botao_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 50)
+    botao_rect = pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 100, 400, 50)
 
     game_over = True
 

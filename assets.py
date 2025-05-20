@@ -9,11 +9,9 @@ def load_assets():
     #imagens(frutas, faca, bomba, fundos)
     assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
 
-    assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho.png')).convert()
+    assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho.jpg')).convert()
     assets['medio'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja.png')).convert()
-    assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo mirtilo.jpg')).convert()
-
-
+    assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul.jpg')).convert()
 
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert_alpha()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
@@ -54,7 +52,8 @@ def load_assets():
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
     assets['faca_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'faca.wav'))
     assets['musica_normal'] = os.path.join(SND_DIR, 'musica.mp3')
-    #adicionar bonus musica
+    assets['freeze_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'freeze.mp3'))
+    assets['bonus_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'som dourado.wav'))
     #adicionar pew
     #adicionar som de perder vida
 
