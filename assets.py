@@ -15,33 +15,33 @@ def load_assets():
 
 
 
-    melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert()
+    melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert_alpha()
     assets['melancia'] = pygame.transform.scale(melancia, (MELANCIA_WIDTH, MELANCIA_HEIGHT))
 
-    mirtilo = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo.webp')).convert()
+    mirtilo = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo.webp')).convert_alpha()
     assets['mirtilo'] = pygame.transform.scale(mirtilo, (MIRTILO_WIDTH, MIRTILO_HEIGHT))
 
-    pessego = pygame.image.load(os.path.join(IMG_DIR, 'pessego.png')).convert()
+    pessego = pygame.image.load(os.path.join(IMG_DIR, 'pessego.png')).convert_alpha()
     assets['pessego'] = pygame.transform.scale(pessego, (PESSEGO_WIDTH, PESSEGO_HEIGHT))
 
-    faca = pygame.image.load(os.path.join(IMG_DIR, 'faca.png')).convert()
+    faca = pygame.image.load(os.path.join(IMG_DIR, 'faca.png')).convert_alpha()
     assets['faca'] = pygame.transform.scale(faca, (FACA_WIDTH, FACA_HEIGHT))
     
-    bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.webp')).convert()
+    bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.webp')).convert_alpha()
     assets['bomba'] = pygame.transform.scale(bomba, (BOMBA_WIDTH, BOMBA_HEIGHT))
 
-    cheio = pygame.image.load(os.path.join(IMG_DIR, 'vida cheia.png')).convert()
+    cheio = pygame.image.load(os.path.join(IMG_DIR, 'vida cheia.png')).convert_alpha()
     assets['vida cheia'] = pygame.transform.scale(cheio, (30, 30))
     
-    vazio = pygame.image.load(os.path.join(IMG_DIR, 'vida vazia.png')).convert()
+    vazio = pygame.image.load(os.path.join(IMG_DIR, 'vida vazia.png')).convert_alpha()
     assets['vida vazia'] = pygame.transform.scale(vazio, (30, 30))
 
     #frutas especiais
     
-    dourada = pygame.image.load(os.path.join(IMG_DIR, 'dourada.png')).convert()
+    dourada = pygame.image.load(os.path.join(IMG_DIR, 'dourada.png')).convert_alpha()
     assets['dourada'] = pygame.transform.scale(dourada, (30, 30))
     
-    gelo = pygame.image.load(os.path.join(IMG_DIR, 'gelo.webp')).convert()
+    gelo = pygame.image.load(os.path.join(IMG_DIR, 'gelo.webp')).convert_alpha()
     assets['gelo'] = pygame.transform.scale(gelo, (30, 30))
 
     #fonts
