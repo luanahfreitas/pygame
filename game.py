@@ -19,7 +19,8 @@ def tela_jogo(screen,dificuldade,assets):
     frutas = pygame.sprite.Group()
     particulas = pygame.sprite.Group()
 
-    faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
+    faca_x = WIDTH // 2
+    faca_atual = Faca(faca_x, HEIGHT - 10, assets)
     facas.add(faca_atual)
 
     if dificuldade == EASY:
@@ -72,11 +73,13 @@ def tela_jogo(screen,dificuldade,assets):
         for faca in facas:
             if not faca.lancada:
                 faca.update(teclas)
+                faca_x = faca.rect.centerx  #salva posição atual
             else:
                 faca.update(None)
 
+        #faca foi lançada, cria nova faca na posição anterior:
         if len(facas) == 0:
-            faca_atual = Faca(WIDTH // 2, HEIGHT - 10, assets)
+            faca_atual = Faca(faca_x, HEIGHT - 10, assets)
             facas.add(faca_atual)
         
         #frutas com intervalo de tempo
@@ -102,17 +105,19 @@ def tela_jogo(screen,dificuldade,assets):
         particulas.update()
 
         for fruta in frutas:
-            if fruta.rect.top > HEIGHT:
-                fruta.kill()
-                vidas -= 1
-                if vidas >= 0:
-                    animacao_coracao(screen,assets,vidas)
-                    vida_estado[vidas] = False
-                if vidas <= 0:
-                    pygame.mixer.music.stop()
-                    fade_out(screen)
-                    shake_screen(screen)
-                    return pontos
+            if fruta.tipo == 'normal':
+                #verifica se a fruta saiu da tela
+                if fruta.rect.top > HEIGHT:
+                    fruta.kill()
+                    vidas -= 1
+                    if vidas >= 0:
+                        animacao_coracao(screen,assets,vidas)
+                        vida_estado[vidas] = False
+                    if vidas <= 0:
+                        pygame.mixer.music.stop()
+                        fade_out(screen)
+                        shake_screen(screen)
+                        return pontos
 
         #colisões - faca com a fruta
         colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
@@ -124,8 +129,7 @@ def tela_jogo(screen,dificuldade,assets):
                     pontos += 20
                     modo_bonus = True
                     bonus_timer = pygame.time.get_ticks()  #inicia o contagem do modo bônus
-                    #pygame.mixer.music.load(assets['bonus_musica'])
-                    #pygame.mixer.music.play(-1)  # loop infinito da musica
+                    assets['bonus_sound'].play()
 
                 elif fruta.tipo == 'congelada':
                     for _ in range(20):
@@ -135,13 +139,13 @@ def tela_jogo(screen,dificuldade,assets):
                     FPS_padrao = 30
                     congelar_tela(screen)
                     pontos +=5 * (2 if modo_bonus else 1)
+                    assets['freeze_sound'].play()
 
                 else:  #normal
                     for _ in range(15):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
                     pontos += 5 * (2 if modo_bonus else 1)
-
-                assets['faca_sound'].play()  #som da faca cortando a fruta
+                    assets['faca_sound'].play()  #som da faca cortando a fruta
 
         #colisões - faca com a bomba
         if pygame.sprite.groupcollide(facas,bombas,True,False):
