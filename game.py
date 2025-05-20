@@ -8,7 +8,10 @@ from classes import Faca, Frutas, Bomba, Particula
 def tela_jogo(screen,dificuldade,assets):
     clock = pygame.time.Clock()
     tempo_inicio = pygame.time.get_ticks()
-    
+
+    vidas = 3
+    vida_estado = [True,True,True]
+
     fonte = assets['padrao_font']
 
     facas = pygame.sprite.Group()
@@ -32,10 +35,17 @@ def tela_jogo(screen,dificuldade,assets):
     pontos = 0
     state = ON
 
+    pygame.mixer.music.load(assets['musica'])
+    pygame.mixer.music.play(-1)  # loop infinito da musica
+    pygame.mixer.music.set_volume(0.3)
+
+    modo_bonus = False
+    bonus_timer = 0
+    FPS_padrao = 60
+
     while state != DONE:
-        clock.tick(FPS)
+        clock.tick(FPS_padrao)
         tempo_passado = (pygame.time.get_ticks() - tempo_inicio) / 1000
-        vidas = 3
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -72,29 +82,49 @@ def tela_jogo(screen,dificuldade,assets):
 
         frutas.update()
         bombas.update()
+        particulas.update()
 
         for fruta in frutas:
             if fruta.rect.top > HEIGHT:
                 fruta.kill()
                 vidas -= 1
+                if vidas >= 0:
+                    animacao_coracao(screen,assets,vidas)
+                    vida_estado[vidas] = False
                 if vidas <= 0:
                     pygame.mixer.music.stop()
                     fade_out(screen)
                     explodir_tela(screen, assets)
                     return pontos
 
-        #colisões
+        #colisões - faca com a fruta
         colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
         for faca, frutas in colisoes.items():
             for fruta in frutas:
                 if fruta.tipo == 'dourada':
+                    for _ in range(20):
+                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 215, 0)))  # dourado
                     pontos += 20
-                elif fruta.tipo == 'congelada':
-                    FPS = max(20, FPS - 10)
-                else:
-                    pontos += 5
-                assets['faca_sound'].play()
+                    modo_bonus = True
+                    bonus_timer = pygame.time.get_ticks()  #inicia o contagem do modo bônus
+                    pygame.mixer.music.load(assets['bonus_musica'])
+                    pygame.mixer.music.play(-1)  # loop infinito da musica
 
+                elif fruta.tipo == 'congelada':
+                    for _ in range(20):
+                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (150, 200, 255)))  # azul claro
+                    FPS = max(20, FPS - 10)
+                    congelar_tela(screen)
+                    pontos +=5 * (2 if modo_bonus else 1)
+
+                else:  #normal
+                    for _ in range(15):
+                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
+                    pontos += 5 * (2 if modo_bonus else 1)
+
+                assets['faca_sound'].play()  #som da faca cortando a fruta
+
+        #colisões - faca com a bomba
         if pygame.sprite.groupcollide(facas,bombas,True,False):
             assets['explosion_sound'].play()
             pygame.mixer.music.stop()
@@ -105,6 +135,14 @@ def tela_jogo(screen,dificuldade,assets):
         
         screen.blit(imagem_fundo, (0,0))
 
+        if modo_bonus:
+            tempo = (pygame.time.get_ticks() - bonus_timer) / 1000
+            if tempo > 15:
+                modo_bonus = False
+                FPS_padrao = 60
+                pygame.mixer.music.load(assets['musica'])
+                pygame.mixer.music.play(-1)
+
         #desenha os sprites na tela
         frutas.draw(screen)
         particulas.draw(screen)
@@ -114,15 +152,18 @@ def tela_jogo(screen,dificuldade,assets):
         #coloca os pontos na tela de jogo 
         texto = fonte.render(f"Pontos: {pontos}", True, WHITE)  #cor branca
         screen.blit(texto, (10, 10))  #tamanho do texto
-        pygame.display.flip()
 
         #desenha as vidas na tela - corações
         for i in range(3):
-            if i < vidas:
-                screen.blit(assets['vida_cheia'], (10 + i * 35, 50))
+            x = 10 + i * 35
+            y = 50
+            if vida_estado[i]:
+                screen.blit(assets['vida_cheia'], (x, y))
             else:
-                screen.blit(assets['vida_vazia'], (10 + i * 35, 50))
-            #som de perda de vida
+                screen.blit(assets['vida_vazia'], (x, y))
+        
+        pygame.display.flip()
+        
 
 def explodir_tela(screen,assets):
     animacao = assets['explosion_anim']
@@ -135,7 +176,7 @@ def explodir_tela(screen,assets):
         pygame.display.flip()
 
 
-#Fade out effect (ajuda de inteligencia artificial)
+#fade out efeito
 def fade_out(screen, velocidade=10):
     fade = pygame.Surface((WIDTH, HEIGHT))
     fade.fill((0, 0, 0))
@@ -156,3 +197,29 @@ def shake_screen(screen, intensidade = 5, duracao = 10):
         screen.blit(fundo_original, (offset_x, offset_y))
         pygame.display.flip()
         pygame.time.delay(30)
+
+
+#Animação de corações
+def animacao_coracao(screen,assets,i,duracao=10):
+    cheio = assets['vida_cheia']
+    vazio = assets['vida_vazia']
+    x = 10 + i * 35
+    y = 50
+    for alpha in range(255, 0, -int(255 / duracao)):
+        # Cria uma cópia da imagem com opacidade reduzido
+        img = cheio.copy()
+        img.set_alpha(alpha)
+
+        screen.blit(vazio, (x, y))    
+        screen.blit(img, (x, y))
+        pygame.display.flip()
+        pygame.time.delay(30)
+
+def congelar_tela(screen, duracao=5000):
+    congelado = pygame.Surface((WIDTH, HEIGHT))
+    congelado.fill((100, 180, 255))  # azul claro
+    congelado.set_alpha(100)         # Transparente
+    screen.blit(congelado, (0, 0))
+    pygame.display.flip()
+    pygame.time.delay(duracao)
+
