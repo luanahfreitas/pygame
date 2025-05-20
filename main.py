@@ -7,6 +7,7 @@ from game_over import game_over_screen
 
 #inicializa a tela
 pygame.init()
+
 #inicializa a musica
 pygame.mixer.init()
 
@@ -15,8 +16,9 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("desFRUTANDO")
 
 assets = load_assets()
-pygame.mixer.music.play(-1)   #loop infinito da musica
 
+pygame.mixer.music.load(assets['musica_normal'])
+pygame.mixer.music.play(-1)
 
 jogando = True 
 
