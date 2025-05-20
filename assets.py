@@ -47,7 +47,7 @@ def load_assets():
     #sons
     assets['explosion_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'bomb.wav'))
     assets['faca_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'faca.wav'))
-    assets['musica'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'musica.mp3'))
+    assets['musica_normal'] = os.path.join(SND_DIR, 'musica.mp3')
     #adicionar bonus musica
     #adicionar pew
     #adicionar som de perder vida

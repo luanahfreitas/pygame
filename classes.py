@@ -42,7 +42,7 @@ class Faca(pygame.sprite.Sprite):
     
 
 class Frutas(pygame.sprite.Sprite):
-    def __init__(self, imagem_fruta):
+    def __init__(self, imagem_fruta, tipo='normal'):
         pygame.sprite.Sprite.__init__(self)
         self.image = imagem_fruta  #imagem varia de acordo com a dificuldade selecionada
         self.tipo = tipo  #'normal', 'dourada', 'congelada'

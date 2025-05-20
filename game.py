@@ -23,19 +23,19 @@ def tela_jogo(screen,dificuldade,assets):
     facas.add(faca_atual)
 
     if dificuldade == EASY:
-        imagem_fruta = [assets['melancia']]
+        imagem_fruta = assets['melancia']
         imagem_fundo = assets['fundo melancia']
     elif dificuldade == MEDIUM:
-        imagem_fruta = [assets['pessego']]
+        imagem_fruta = assets['pessego']
         imagem_fundo = assets['fundo pessego']
     elif dificuldade == HARD:
-        imagem_fruta = [assets['mirtilo']]
+        imagem_fruta = assets['mirtilo']
         imagem_fundo = assets['fundo mirtilo']
 
     pontos = 0
     state = ON
 
-    pygame.mixer.music.load(assets['musica'])
+    pygame.mixer.music.load(assets['musica_normal'])
     pygame.mixer.music.play(-1)  # loop infinito da musica
     pygame.mixer.music.set_volume(0.3)
 
@@ -107,13 +107,13 @@ def tela_jogo(screen,dificuldade,assets):
                     pontos += 20
                     modo_bonus = True
                     bonus_timer = pygame.time.get_ticks()  #inicia o contagem do modo bônus
-                    pygame.mixer.music.load(assets['bonus_musica'])
-                    pygame.mixer.music.play(-1)  # loop infinito da musica
+                    #pygame.mixer.music.load(assets['bonus_musica'])
+                    #pygame.mixer.music.play(-1)  # loop infinito da musica
 
                 elif fruta.tipo == 'congelada':
                     for _ in range(20):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (150, 200, 255)))  # azul claro
-                    FPS = max(20, FPS - 10)
+                    FPS_padrao = max(20, FPS_padrao - 10)
                     congelar_tela(screen)
                     pontos +=5 * (2 if modo_bonus else 1)
 
@@ -140,7 +140,7 @@ def tela_jogo(screen,dificuldade,assets):
             if tempo > 15:
                 modo_bonus = False
                 FPS_padrao = 60
-                pygame.mixer.music.load(assets['musica'])
+                pygame.mixer.music.load(assets['musica_normal'])
                 pygame.mixer.music.play(-1)
 
         #desenha os sprites na tela
@@ -158,9 +158,9 @@ def tela_jogo(screen,dificuldade,assets):
             x = 10 + i * 35
             y = 50
             if vida_estado[i]:
-                screen.blit(assets['vida_cheia'], (x, y))
+                screen.blit(assets['vida cheia'], (x, y))
             else:
-                screen.blit(assets['vida_vazia'], (x, y))
+                screen.blit(assets['vida vazia'], (x, y))
         
         pygame.display.flip()
         
@@ -201,8 +201,8 @@ def shake_screen(screen, intensidade = 5, duracao = 10):
 
 #Animação de corações
 def animacao_coracao(screen,assets,i,duracao=10):
-    cheio = assets['vida_cheia']
-    vazio = assets['vida_vazia']
+    cheio = assets['vida cheia']
+    vazio = assets['vida vazia']
     x = 10 + i * 35
     y = 50
     for alpha in range(255, 0, -int(255 / duracao)):
