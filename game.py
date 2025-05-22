@@ -53,8 +53,11 @@ def tela_jogo(screen,dificuldade,assets):
     tempo_ultima_bomba = pygame.time.get_ticks()
     intervalo_bomba = 4000  # bomba só pode cair a cada 4 segundos
 
+    frutas_cortadas = []
+
     while state != DONE:
         clock.tick(FPS_padrao)
+        frutas_cortadas.clear()
         tempo_atual = pygame.time.get_ticks()
         tempo_passado = (tempo_atual - tempo_inicio) / 1000
 
@@ -115,34 +118,41 @@ def tela_jogo(screen,dificuldade,assets):
                     return pontos
 
         #colisões - faca com a fruta
-        colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
-        for faca, frutas_colididas in colisoes.items():
-            for fruta in frutas_colididas:
-                if fruta.tipo == 'dourada':
-                    for _ in range(20):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 215, 0)))  # dourado
-                    pontos += 20
-                    modo_bonus = True
-                    bonus_timer = pygame.time.get_ticks()  #inicia o contagem do modo bônus
-                    #pygame.mixer.music.load(assets['bonus_musica'])
-                    #pygame.mixer.music.play(-1)  # loop infinito da musica
-
-                elif fruta.tipo == 'congelada':
-                    for _ in range(20):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (150, 200, 255)))  # azul claro
-                    congelado = True
-                    congelado_timer = tempo_atual
-                    FPS_padrao = 30
-                    congelar_tela(screen)
-                    pontos +=5 * (2 if modo_bonus else 1)
-
-                else:  #normal
-                    for _ in range(15):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
-                    pontos += 5 * (2 if modo_bonus else 1)
-
-                assets['faca_sound'].play()  #som da faca cortando a fruta
-
+        if pygame.mouse.get_pressed()[0]:
+            mouse_pos = pygame.mouse.get_pos()
+            for fruta in frutas:
+                if fruta.rect.collidepoint(mouse_pos) and fruta not in frutas_cortadas:
+                    frutas_cortadas.append(fruta)
+                    frutas.remove(fruta)
+                    fruta.kill()
+                    if fruta.tipo == 'normal':
+                        pontos += 5 * (2 if modo_bonus else 1)
+                        assets['faca_sound'].play()
+                        for i in range(15):
+                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                            particulas.add(particula)
+                    
+                    elif fruta.tipo == 'dourada':
+                        pontos += 20
+                        modo_bonus = True
+                        bonus_timer = pygame.time.get_ticks()
+                        FPS_padrao = 120
+                        pygame.mixer.music.load(assets['musica_bonus'])
+                        for i in range(20):
+                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                            particulas.add(particula)
+                    
+                    elif fruta.tipo == 'congelada':
+                        congelado = True
+                        congelado_timer = pygame.time.get_ticks()
+                        FPS_padrao = 30
+                        pontos += 5 * (2 if modo_bonus else 1)
+                        assets['freeze_sound'].play()
+                        #congelar_tela(screen, duracao=5000)
+                        for i in range(20):
+                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                            particulas.add(particula)
+    
         #colisões - faca com a bomba
         if pygame.sprite.groupcollide(facas,bombas,True,False):
             assets['explosion_sound'].play()
