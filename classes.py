@@ -6,19 +6,19 @@ from config import *
 # Definindo Faca, Frutas e Bomba 
 
 class Fruta(pygame.sprite.Sprite):
-    def __init__(self, imagem_fruta, tipo='normal', velocidade=3, direction='baixo'):
+    def __init__(self, imagem_fruta, tipo='normal', velocidade=3, direcao='baixo'):
         pygame.sprite.Sprite.__init__(self)
         self.image = imagem_fruta  #imagem varia de acordo com a dificuldade selecionada
         self.tipo = tipo  #'normal', 'dourada', 'congelada'
         self.speed = velocidade  #velocidade que a fruta cai
-        self.direction = direction  #direção que a fruta cai
+        self.direction = direcao  #direção que a fruta cai
         self.rect = self.image.get_rect()
 
-        if direction == 'baixo':
+        if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
-        elif direction == 'esquerda':
+        elif direcao == 'esquerda':
             self.rect.midleft = (-50, random.randint(50, HEIGHT - 50))
-        elif direction == 'direita':
+        elif direcao == 'direita':
             self.rect.midright = (-50, random.randint(50, HEIGHT - 50))  
             
         self.particle.timer = 0
@@ -42,18 +42,18 @@ class Fruta(pygame.sprite.Sprite):
 
 
 class Bomba(pygame.sprite.Sprite):
-    def __init__(self, assets, velocidade=3, direction='baixo'):
+    def __init__(self, assets, velocidade=3, direcao='baixo'):
         pygame.sprite.Sprite.__init__(self)
         self.image = assets['bomba']
         self.speed = velocidade
-        self.direction = direction  #direção que a bomba cai
+        self.direction = direcao  #direção que a bomba cai
         self.rect = self.image.get_rect()
 
-        if direction == 'baixo':
+        if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
-        elif direction == 'esquerda':
+        elif direcao == 'esquerda':
             self.rect.midleft = (-50, random.randint(50, HEIGHT - 50))
-        elif direction == 'direita':
+        elif direcao == 'direita':
             self.rect.midright = (-50, random.randint(50, HEIGHT - 50))  
             
         self.particle.timer = 0

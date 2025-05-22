@@ -18,6 +18,7 @@ def tela_jogo(screen,dificuldade,assets):
     bombas = pygame.sprite.Group()
     frutas = pygame.sprite.Group()
     particulas = pygame.sprite.Group()
+    explosoes = pygame.sprite.Group()
 
     faca_x = WIDTH // 2
     faca_atual = Faca(faca_x, HEIGHT - 10, assets)
@@ -26,12 +27,17 @@ def tela_jogo(screen,dificuldade,assets):
     if dificuldade == EASY:
         imagem_fruta = assets['melancia']
         imagem_fundo = assets['facil']
+        fundo_extremo = assets['facil_extremo']
     elif dificuldade == MEDIUM:
         imagem_fruta = assets['pessego']
         imagem_fundo = assets['medio']
+        fundo_extremo = assets['medio_extremo']
     elif dificuldade == HARD:
         imagem_fruta = assets['mirtilo']
         imagem_fundo = assets['dificil']
+        fundo_extremo = assets['dificil_extremo']
+
+    fundo_atual = imagem_fundo
 
     pontos = 0
     state = ON
@@ -54,144 +60,125 @@ def tela_jogo(screen,dificuldade,assets):
     tempo_ultima_bomba = pygame.time.get_ticks()
     intervalo_bomba = 4000  # bomba só pode cair a cada 4 segundos
 
-    frutas_cortadas = []
+    
 
     while state != DONE:
         clock.tick(FPS_padrao)
-        frutas_cortadas.clear()
         tempo_atual = pygame.time.get_ticks()
         tempo_passado = (tempo_atual - tempo_inicio) / 1000
+
+        direcoes = ['baixo']
+        velocidade_padrao = 3 + pontos // 30
+        if pontos >= 120:
+            direcoes = ['baixo', 'esquerda', 'direita']
+        if pontos >= 160:
+            fundo_extremo = fundo_extremo
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return pontos
-    
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                if not faca_atual.lancada:
-                    faca_atual.lancar()
-                    #assets['pew'].play()
                 
-        teclas = pygame.key.get_pressed()
-
-        for faca in facas:
-            if not faca.lancada:
-                faca.update(teclas)
-                faca_x = faca.rect.centerx  #salva posição atual
-            else:
-                faca.update(None)
-
-        #faca foi lançada, cria nova faca na posição anterior:
-        if len(facas) == 0:
-            faca_atual = Faca(faca_x, HEIGHT - 10, assets)
-            facas.add(faca_atual)
+        mouse_pos = pygame.mouse.get_pos()
+        clique = pygame.key.get_pressed()[0]
         
+
         #frutas com intervalo de tempo
         if tempo_atual - tempo_ultima_fruta > intervalo_fruta:
             r = random.randint(1, 100)
             if r <= 5:
-                frutas.add(Fruta(assets['dourada'], tipo='dourada'))
+                frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
             elif r <= 10:
-                frutas.add(Fruta(assets['gelo'], tipo='congelada'))
+                frutas.add(Fruta(assets['gelo'], tipo='congelada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
             else:
-                frutas.add(Fruta(imagem_fruta, tipo='normal'))
+                frutas.add(Fruta(imagem_fruta, tipo='normal', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
             tempo_ultima_fruta = tempo_atual
+
 
         #bombas - só depois de 15s
         if tempo_passado > 15 and tempo_atual - tempo_ultima_bomba > intervalo_bomba:
             if random.randint(1, 100) <= 10:
-                bombas.add(Bomba(assets))
+                bombas.add(Bomba(assets, velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
                 tempo_ultima_bomba = tempo_atual
 
 
         frutas.update()
         bombas.update()
         particulas.update()
+        explosoes.update()
 
-        for fruta in frutas:
-            if fruta.tipo == 'normal':
-                #verifica se a fruta saiu da tela
-                if fruta.rect.top > HEIGHT:
-                    fruta.kill()
-                    vidas -= 1
-                    if vidas >= 0:
-                        animacao_coracao(screen,assets,vidas)
-                        vida_estado[vidas] = False
-                    if vidas <= 0:
-                        pygame.mixer.music.stop()
-                        fade_out(screen)
-                        shake_screen(screen)
-                        return pontos
+        # Verifica frutas que passaram da tela
+        for fruta in frutas.copy():
+            if fruta.rect.top > HEIGHT or fruta.rect.right < 0 or fruta.rect.left > WIDTH:
+                frutas.remove(fruta)
+                fruta.kill()
+                vidas -= 1
+                if vidas >= 0:
+                    vida_estado[vidas] = False
+                    animacao_coracao(screen, assets, vidas)
+                if vidas <= 0:
+                    pygame.mixer.music.stop()
+                    fade_out(screen)
+                    return pontos
+                
 
-        #colisões - faca com a fruta
-        if pygame.mouse.get_pressed()[0]:
-            mouse_pos = pygame.mouse.get_pos()
-            for fruta in frutas:
-                if fruta.rect.collidepoint(mouse_pos) and fruta not in frutas_cortadas:
-                    frutas_cortadas.append(fruta)
-                    frutas.remove(fruta)
-                    fruta.kill()
-                    if fruta.tipo == 'normal':
-                        pontos += 5 * (2 if modo_bonus else 1)
-                        assets['faca_sound'].play()
-                        for i in range(15):
-                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                            particulas.add(particula)
+        #colisões -  mouse (faca) com a fruta
+        for fruta in frutas.copy():
+            if clique and fruta.rect.collidepoint(mouse_pos):
+                frutas.remove(fruta)
+                fruta.kill()
+
+                if fruta.tipo == 'normal':
+                    pontos += 5 * (2 if modo_bonus else 1)
+                    assets['faca_sound'].play() 
+                    for i in range(15):
+                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                        particulas.add(particula)
                     
-                    elif fruta.tipo == 'dourada':
-                        pontos += 20
-                        modo_bonus = True
-                        bonus_timer = pygame.time.get_ticks()
-                        FPS_padrao = 120
-                        pygame.mixer.music.load(assets['musica_bonus'])
-                        for i in range(20):
-                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                            particulas.add(particula)
-                    
-                    elif fruta.tipo == 'congelada':
-                        congelado = True
-                        congelado_timer = pygame.time.get_ticks()
-                        FPS_padrao = 30
-                        pontos += 5 * (2 if modo_bonus else 1)
-                        assets['freeze_sound'].play()
-                        #congelar_tela(screen, duracao=5000)
-                        for i in range(20):
-                            particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                            particulas.add(particula)
-    
-        colisoes = pygame.sprite.groupcollide(facas, frutas, True, True)
-        for faca, frutas_colididas in colisoes.items():
-            for fruta in frutas_colididas:
-                if fruta.tipo == 'dourada':
-                    for _ in range(20):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 215, 0)))  # dourado
+                elif fruta.tipo == 'dourada':
                     pontos += 20
                     modo_bonus = True
-                    bonus_timer = pygame.time.get_ticks()  #inicia o contagem do modo bônus
-                    assets['bonus_sound'].play()
-
+                    bonus_timer = pygame.time.get_ticks()
+                    FPS_padrao = 120
+                    pygame.mixer.music.load(assets['musica_bonus'])
+                    for i in range(20):
+                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                        particulas.add(particula)
+                    
                 elif fruta.tipo == 'congelada':
-                    for _ in range(20):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (150, 200, 255)))  # azul claro
                     congelado = True
-                    congelado_timer = tempo_atual
+                    congelado_timer = pygame.time.get_ticks()
                     FPS_padrao = 30
-                    congelar_tela(screen)
-                    pontos +=5 * (2 if modo_bonus else 1)
-                    assets['freeze_sound'].play()
-
-                else:  #normal
-                    for _ in range(15):
-                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
                     pontos += 5 * (2 if modo_bonus else 1)
-                    assets['faca_sound'].play()  #som da faca cortando a fruta
+                    assets['freeze_sound'].play()
+                    #congelar_tela(screen, duracao=5000)
+                    for i in range(20):
+                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
+                        particulas.add(particula)
+                
+                elif fruta.tipo == 'explosiva':
+                    assets['explosiva'].play()
+                    for f in frutas.copy():
+                        explosoes.add(Explosão(f.rect.centerx, assets['explosao fruta']))
+                        f.kill()
+                        pontos += 5 * (2 if modo_bonus else 1)
+                    shake_screen(screen)
+                
+                elif fruta.tipo == 'vida':
+                    if vidas < 3:
+                        vida_estado[vidas] = True
+                        vidas += 1
+                        assets['vida ganha'].play()
+                
+        for bomba in bombas.copy():
+            if clique and bomba.rect.collidepoint(mouse_pos):
+                bomba.kill()
+                assets['explosion_sound'].play()
+                pygame.mixer.music.stop()
 
-        #colisões - faca com a bomba
-        if pygame.sprite.groupcollide(facas,bombas,True,False):
-            assets['explosion_sound'].play()
-            pygame.mixer.music.stop()
-            shake_screen(screen)
-            fade_out(screen)
-            return pontos
+                shake_screen(screen)
+                fade_out(screen)
+                return pontos
+
         
         screen.blit(imagem_fundo, (0,0))
 
@@ -208,6 +195,12 @@ def tela_jogo(screen,dificuldade,assets):
         particulas.draw(screen)
         bombas.draw(screen)
         facas.draw(screen)
+
+        screen.blit(fundo_atual, (0,0))
+
+        #faca acompanha o mouse
+        mouse = pygame.mouse.get_pos()
+        screen.blit(assets['faca'], (mouse[0] - FACA_WIDTH // 2, mouse[1] - FACA_HEIGHT // 2))
 
         #coloca os pontos na tela de jogo 
         texto = fonte.render(f"Pontos: {pontos}", True, WHITE)  #cor branca
