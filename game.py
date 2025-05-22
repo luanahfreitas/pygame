@@ -2,7 +2,7 @@ import pygame
 from assets import load_assets
 from config import *
 import random
-from classes import Faca, Fruta, Bomba, Particula
+from classes import Fruta, Bomba, Particula, Explosão
 
 
 def tela_jogo(screen,dificuldade,assets):
@@ -19,10 +19,6 @@ def tela_jogo(screen,dificuldade,assets):
     frutas = pygame.sprite.Group()
     particulas = pygame.sprite.Group()
     explosoes = pygame.sprite.Group()
-
-    faca_x = WIDTH // 2
-    faca_atual = Faca(faca_x, HEIGHT - 10, assets)
-    facas.add(faca_atual)
 
     if dificuldade == EASY:
         imagem_fruta = assets['melancia']
@@ -167,7 +163,7 @@ def tela_jogo(screen,dificuldade,assets):
                     if vidas < 3:
                         vida_estado[vidas] = True
                         vidas += 1
-                        assets['vida ganha'].play()
+                        assets['vida'].play()
                 
         for bomba in bombas.copy():
             if clique and bomba.rect.collidepoint(mouse_pos):
