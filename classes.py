@@ -21,14 +21,14 @@ class Fruta(pygame.sprite.Sprite):
         elif direcao == 'direita':
             self.rect.midright = (-50, random.randint(50, HEIGHT - 50))  
             
-        self.particle.timer = 0
+        self.particle_timer = 0
 
     def update(self):
-        if self.direcao == 'baixo':
+        if self.direction == 'baixo':
             self.rect.y += self.speed
-        elif self.direcao == 'esquerda':
+        elif self.direction == 'esquerda':
             self.rect.x += self.speed
-        elif self.direcao == 'direita':
+        elif self.direction == 'direita':
             self.rect.x -= self.speed
 
         # Frutas explosivas geram partículas enquanto caem
@@ -59,11 +59,11 @@ class Bomba(pygame.sprite.Sprite):
         self.particle.timer = 0
 
     def update(self):
-        if self.direcao == 'baixo':
+        if self.direction == 'baixo':
             self.rect.y += self.speed
-        elif self.direcao == 'esquerda':
+        elif self.direction == 'esquerda':
             self.rect.x += self.speed
-        elif self.direcao == 'direita':
+        elif self.direction == 'direita':
             self.rect.x -= self.speed
 
 
