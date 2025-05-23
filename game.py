@@ -74,8 +74,6 @@ def tela_jogo(screen,dificuldade,assets):
             if event.type == pygame.QUIT:
                 return pontos
                 
-        mouse_pos = pygame.mouse.get_pos()
-        clique = pygame.key.get_pressed()[0]
         
 
         #frutas com intervalo de tempo
@@ -104,7 +102,7 @@ def tela_jogo(screen,dificuldade,assets):
 
         # Verifica frutas que passaram da tela
         for fruta in frutas.copy():
-            if fruta.rect.top > HEIGHT or fruta.rect.right < 0 or fruta.rect.left > WIDTH:
+            if not fruta.cortada and (fruta.rect.top > HEIGHT or fruta.rect.right < 0 or fruta.rect.left > WIDTH):
                 frutas.remove(fruta)
                 fruta.kill()
                 vidas -= 1
@@ -153,11 +151,12 @@ def tela_jogo(screen,dificuldade,assets):
                     # Partículas
                     for _ in range(10):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
+                    fruta.cortada = True
                     fruta.kill()
-                    
+
                 
         for bomba in bombas.copy():
-            if clique and bomba.rect.collidepoint(mouse_pos):
+            if pygame.mouse.get_pressed()[0] and bomba.rect.collidepoint(mouse_pos):
                 bomba.kill()
                 assets['explosion_sound'].play()
                 pygame.mixer.music.stop()

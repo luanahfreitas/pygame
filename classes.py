@@ -13,6 +13,7 @@ class Fruta(pygame.sprite.Sprite):
         self.speed = velocidade  #velocidade que a fruta cai
         self.direction = direcao  #direção que a fruta cai
         self.rect = self.image.get_rect()
+        self.cortada = False
 
         if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
