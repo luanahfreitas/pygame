@@ -102,7 +102,7 @@ def tela_jogo(screen,dificuldade,assets):
 
         # Verifica frutas que passaram da tela
         for fruta in frutas.copy():
-            if not fruta.cortada and (fruta.rect.top > HEIGHT or fruta.rect.right < 0 or fruta.rect.left > WIDTH):
+            if not fruta.cortada and fruta.tipo == 'normal' and (fruta.rect.top > HEIGHT or fruta.rect.right < 0 or fruta.rect.left > WIDTH):
                 frutas.remove(fruta)
                 fruta.kill()
                 vidas -= 1
@@ -148,11 +148,12 @@ def tela_jogo(screen,dificuldade,assets):
                         pontos += 5 * (2 if modo_bonus else 1)
                         assets['faca_sound'].play()
 
+                    fruta.cortada = True
+                    fruta.kill()
+
                     # Partículas
                     for _ in range(10):
                         particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
-                    fruta.cortada = True
-                    fruta.kill()
 
                 
         for bomba in bombas.copy():
