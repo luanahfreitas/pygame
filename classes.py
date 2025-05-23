@@ -55,8 +55,6 @@ class Bomba(pygame.sprite.Sprite):
             self.rect.midleft = (-50, random.randint(50, HEIGHT - 50))
         elif direcao == 'direita':
             self.rect.midright = (-50, random.randint(50, HEIGHT - 50))  
-            
-        self.particle.timer = 0
 
     def update(self):
         if self.direction == 'baixo':
