@@ -186,13 +186,13 @@ def tela_jogo(screen,dificuldade,assets):
                 pygame.mixer.music.load(assets['musica_normal'])
                 pygame.mixer.music.play(-1)
 
+        screen.blit(fundo_atual, (0,0))
+
         #desenha os sprites na tela
         frutas.draw(screen)
         particulas.draw(screen)
         bombas.draw(screen)
         facas.draw(screen)
-
-        screen.blit(fundo_atual, (0,0))
 
         #faca acompanha o mouse
         mouse = pygame.mouse.get_pos()

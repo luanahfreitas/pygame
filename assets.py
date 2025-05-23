@@ -73,7 +73,7 @@ def load_assets():
 
     #animacao
     explosao_fruta = []
-    for i in range(4):
+    for i in range(4,1):
         filename = f'magic_0{i}.png'
         path_img = os.path.join(IMG_DIR, filename)
         img = pygame.image.load(path_img).convert_alpha()
