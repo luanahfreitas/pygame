@@ -118,52 +118,43 @@ def tela_jogo(screen,dificuldade,assets):
                 
 
         #colisões -  mouse (faca) com a fruta
-        for fruta in frutas.copy():
-            if clique and fruta.rect.collidepoint(mouse_pos):
-                frutas.remove(fruta)
-                fruta.kill()
-
-                if fruta.tipo == 'normal':
-                    pontos += 5 * (2 if modo_bonus else 1)
-                    assets['faca_sound'].play() 
-                    for i in range(15):
-                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                        particulas.add(particula)
-                    
-                elif fruta.tipo == 'dourada':
-                    pontos += 20
-                    modo_bonus = True
-                    bonus_timer = pygame.time.get_ticks()
-                    FPS_padrao = 120
-                    pygame.mixer.music.load(assets['musica_bonus'])
-                    for i in range(20):
-                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                        particulas.add(particula)
-                    
-                elif fruta.tipo == 'congelada':
-                    congelado = True
-                    congelado_timer = pygame.time.get_ticks()
-                    FPS_padrao = 30
-                    pontos += 5 * (2 if modo_bonus else 1)
-                    assets['freeze_sound'].play()
-                    #congelar_tela(screen, duracao=5000)
-                    for i in range(20):
-                        particula = Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0))
-                        particulas.add(particula)
-                
-                elif fruta.tipo == 'explosiva':
-                    assets['explosiva'].play()
-                    for f in frutas.copy():
-                        explosoes.add(Explosão(f.rect.centerx, assets['explosao fruta']))
-                        f.kill()
+        if pygame.mouse.get_pressed()[0]:  #detecta movimento mouse
+            mouse_pos = pygame.mouse.get_pos()
+            for fruta in frutas:
+                if fruta.rect.collidepoint(mouse_pos):
+                    # Aplica efeitos como se fosse a faca
+                    if fruta.tipo == 'dourada':
+                        pontos += 20
+                        modo_bonus = True
+                        bonus_timer = pygame.time.get_ticks()
+                        assets['bonus_sound'].play()
+                    elif fruta.tipo == 'congelada':
+                        congelado = True
+                        congelado_timer = pygame.time.get_ticks()
+                        FPS_padrao = 30
                         pontos += 5 * (2 if modo_bonus else 1)
-                    shake_screen(screen)
-                
-                elif fruta.tipo == 'vida':
-                    if vidas < 3:
-                        vida_estado[vidas] = True
-                        vidas += 1
-                        assets['vida'].play()
+                        assets['bonus_sound'].play()
+                    elif fruta.tipo == 'vida':
+                        if vidas < 3:
+                            vidas += 1
+                            vida_estado[vidas - 1] = True
+                            assets['life_sound'].play()
+                    elif fruta.tipo == 'explosiva':
+                        assets['explosiva_explode'].play()
+                        for f in frutas.copy():
+                            pontos += 5
+                            f.kill()
+                            particulas.add(Particula(f.rect.centerx, f.rect.centery, (255, 100, 0)))
+                        shake_screen(screen)
+                    else:
+                        pontos += 5 * (2 if modo_bonus else 1)
+                        assets['faca_sound'].play()
+
+                    # Partículas
+                    for _ in range(10):
+                        particulas.add(Particula(fruta.rect.centerx, fruta.rect.centery, (255, 255, 0)))
+                    fruta.kill()
+                    
                 
         for bomba in bombas.copy():
             if clique and bomba.rect.collidepoint(mouse_pos):
