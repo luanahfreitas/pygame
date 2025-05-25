@@ -192,7 +192,11 @@ def tela_jogo(screen,dificuldade,assets):
         bombas.draw(screen)
         facas.draw(screen)
 
-        
+        if congelado:
+            filtro = pygame.Surface((WIDTH, HEIGHT))
+            filtro.fill((100, 180, 255))  # azul claro
+            filtro.set_alpha(100)         # transparência
+            screen.blit(filtro, (0, 0))
         #faca acompanha o mouse
         mouse = pygame.mouse.get_pos()
         screen.blit(assets['faca'], (mouse[0] - FACA_WIDTH // 2, mouse[1] - FACA_HEIGHT // 2))
