@@ -27,7 +27,7 @@ while jogando:
     state = init_screen(screen,assets)
     #dificuldade do jogo
     if state in [EASY,MEDIUM,HARD]:
-        pontos = tela_jogo(screen,state,assets)  #jogo e retorna os pontos
+        pontos = tela_jogo(screen,state,assets)  #jogo e retorna os 2pontos
 
         state = game_over_screen(screen, pontos, assets)  #tela game over
 
