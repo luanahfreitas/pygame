@@ -65,10 +65,9 @@ def tela_jogo(screen,dificuldade,assets):
 
         direcoes = ['baixo']
         velocidade_padrao = 3 + pontos // 30
-        if pontos >= 120:
+        if pontos >= 150:
             direcoes = ['baixo', 'esquerda', 'direita']
-        if pontos >= 160:
-            fundo_extremo = fundo_extremo
+            fundo_atual = fundo_extremo
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -169,9 +168,10 @@ def tela_jogo(screen,dificuldade,assets):
         
         screen.blit(imagem_fundo, (0,0))
 
+
         if modo_bonus:
             tempo = (pygame.time.get_ticks() - bonus_timer) / 1000
-            if tempo > 15:
+            if tempo > 10:
                 modo_bonus = False
                 FPS_padrao = 60
                 pygame.mixer.music.load(assets['musica_normal'])
@@ -189,9 +189,17 @@ def tela_jogo(screen,dificuldade,assets):
         mouse = pygame.mouse.get_pos()
         screen.blit(assets['faca'], (mouse[0] - FACA_WIDTH // 2, mouse[1] - FACA_HEIGHT // 2))
 
-        #coloca os pontos na tela de jogo 
-        texto = fonte.render(f"Pontos: {pontos}", True, WHITE)  #cor branca
-        screen.blit(texto, (10, 10))  #tamanho do texto
+        #pontos na tela
+        texto_str = f"Pontos: {pontos}"
+        #defina a cor do texto principal
+        cor_texto = YELLOW if modo_bonus else WHITE
+        texto_base, bordas = render_text_com_borda(fonte, texto_str, cor_texto)
+        #desenha as bordas primeiro
+        for dx, dy, borda_img in bordas:
+            screen.blit(borda_img, (10 + dx, 10 + dy))
+        #desenha o texto principal por cima
+        screen.blit(texto_base, (10, 10))
+
 
         #desenha as vidas na tela - corações
         for i in range(3):
@@ -244,11 +252,17 @@ def animacao_coracao(screen,assets,i,duracao=10):
         pygame.display.flip()
         pygame.time.delay(30)
 
-def congelar_tela(screen, duracao=5000):
-    congelado = pygame.Surface((WIDTH, HEIGHT))
-    congelado.fill((100, 180, 255))  # azul claro
-    congelado.set_alpha(100)         # Transparente
-    screen.blit(congelado, (0, 0))
-    pygame.display.flip()
-    pygame.time.delay(duracao)
 
+# Função para renderizar texto com borda (ajuda de inteligencia artificial)
+def render_text_com_borda(fonte, texto, cor_texto, cor_borda=BLACK):
+    #texto original
+    texto_base = fonte.render(texto, True, cor_texto)
+    texto_borda = []
+
+    #cria 8 posições ao redor para a borda
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            if dx != 0 or dy != 0:
+                texto_borda.append((dx, dy, fonte.render(texto, True, cor_borda)))
+
+    return texto_base, texto_borda

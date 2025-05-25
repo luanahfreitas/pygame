@@ -9,13 +9,13 @@ def init_screen(screen,assets):
     #tempo de jogo iniciado
     clock = pygame.time.Clock()
 
-    background = pygame.image.load(path.join(IMG_DIR, 'fundo.jpeg')).convert()
+    background = pygame.image.load(path.join(IMG_DIR, 'fundo.jpg')).convert()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))  #ajustando iamgem de fundo as configurações da tela
 
     font_titulo = assets['titulo_font']
     font = assets['padrao_font']
 
-    # Definindo os estados de acordo com o botão clicado
+    #definindo os estados de acordo com o botão clicado
     botoes = {
         "Fácil": pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 50),
         "Médio": pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - (-10), 200, 50),
@@ -48,13 +48,27 @@ def init_screen(screen,assets):
         screen.blit(background, (0,0))
 
         #configurando o titulo
-        titulo_text = font_titulo.render("desFRUTANDO", True, WHITE)
+        titulo_text = font_titulo.render("desFRUTANDO", True, BLACK)
         titulo_rect = titulo_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
         screen.blit(titulo_text, titulo_rect)
 
         #ajuste dos botões
         for dificuldade, rect in botoes.items():
-            pygame.draw.rect(screen,WHITE,rect)    # Cor branca para os botões
+            mouse_pos = pygame.mouse.get_pos()
+            #desenho do botão
+            if rect.collidepoint(mouse_pos):
+                # Hover: borda azul, fundo cinza claro
+                pygame.draw.rect(screen, BLACK, rect, width=3)  # Borda
+                inner_rect = rect.inflate(-6, -6)
+                pygame.draw.rect(screen, (200, 200, 200), inner_rect)  # Fundo hover
+            else:
+                # Normal: borda preta, fundo branco
+                pygame.draw.rect(screen, BLACK, rect, width=3)
+                inner_rect = rect.inflate(-6, -6)
+                pygame.draw.rect(screen, WHITE, inner_rect)
+
+
+            #texto
             texto = font.render(dificuldade, True, BLACK)
             texto_rect = texto.get_rect(center=rect.center)
             screen.blit(texto, texto_rect)

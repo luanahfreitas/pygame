@@ -8,7 +8,8 @@ def load_assets():
 
     #imagens(frutas, faca, bomba, fundos)
     #fundos 
-    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
+    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpg')).convert()
+
     #modo normal
     assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho.jpg')).convert()
     assets['medio'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja.png')).convert()
