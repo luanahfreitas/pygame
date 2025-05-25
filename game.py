@@ -168,6 +168,13 @@ def tela_jogo(screen,dificuldade,assets):
         
         screen.blit(imagem_fundo, (0,0))
 
+        tempo_congelado = (pygame.time.get_ticks() - congelado_timer) / 1000
+
+        #efeitos de congelamento
+        if congelado:
+            if pygame.time.get_ticks() - congelado_timer > tempo_congelado:
+                congelado = False
+                FPS_padrao = 60
 
         if modo_bonus:
             tempo = (pygame.time.get_ticks() - bonus_timer) / 1000
@@ -185,6 +192,7 @@ def tela_jogo(screen,dificuldade,assets):
         bombas.draw(screen)
         facas.draw(screen)
 
+        
         #faca acompanha o mouse
         mouse = pygame.mouse.get_pos()
         screen.blit(assets['faca'], (mouse[0] - FACA_WIDTH // 2, mouse[1] - FACA_HEIGHT // 2))
