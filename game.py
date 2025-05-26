@@ -44,6 +44,7 @@ def tela_jogo(screen,dificuldade,assets):
 
     congelado = False
     congelado_timer = 0
+    duracao_congelado = 5000
     
     modo_bonus = False
     bonus_timer = 0
@@ -168,11 +169,10 @@ def tela_jogo(screen,dificuldade,assets):
         
         screen.blit(imagem_fundo, (0,0))
 
-        tempo_congelado = (pygame.time.get_ticks() - congelado_timer) / 1000
 
         #efeitos de congelamento
         if congelado:
-            if pygame.time.get_ticks() - congelado_timer > tempo_congelado:
+            if pygame.time.get_ticks() - congelado_timer > duracao_congelado:
                 congelado = False
                 FPS_padrao = 60
 
