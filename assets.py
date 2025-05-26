@@ -16,9 +16,9 @@ def load_assets():
     assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul.jpg')).convert()
 
     #modo extremo
-    assets['facil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'melancia extremo.webp')).convert()
-    assets['medio_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'pessego extremo.png')).convert()
-    assets['dificil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'mirtilo extremo.jpg')).convert()
+    assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho copy.jpg')).convert()
+    assets['medio'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja copy.png')).convert()
+    assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul copy.jpg')).convert()
 
     #frutas
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert_alpha()
