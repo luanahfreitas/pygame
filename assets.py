@@ -16,9 +16,9 @@ def load_assets():
     assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul.jpg')).convert()
 
     #modo extremo
-    assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho copy.jpg')).convert()
-    assets['medio'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja copy.png')).convert()
-    assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul copy.jpg')).convert()
+    assets['facil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho copy.jpg')).convert()
+    assets['medio_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja copy.png')).convert()
+    assets['dificil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul copy.jpg')).convert()
 
     #frutas
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert_alpha()
@@ -53,9 +53,6 @@ def load_assets():
     gelo = pygame.image.load(os.path.join(IMG_DIR, 'gelo.webp')).convert_alpha()
     assets['gelo'] = pygame.transform.scale(gelo, (50, 50))
 
-    abacaxi = pygame.image.load(os.path.join(IMG_DIR, 'abacaxi.png')).convert_alpha()
-    assets['explosiva'] = pygame.transform.scale(abacaxi, (50, 50))
-
 
     #fonts
     assets['titulo_font'] = pygame.font.Font(os.path.join(FONT_DIR, 'titulo.ttf'), 80)
@@ -69,8 +66,7 @@ def load_assets():
     assets['musica_normal'] = os.path.join(SND_DIR, 'musica.mp3')
     assets['freeze_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'freeze.mp3'))
     assets['bonus_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'som dourado.wav'))
-    assets['vida'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'vida ganha.wav'))
-    #assets['brilho'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'brilho.wav'))
+    
 
     #animacao
     explosao_fruta = []

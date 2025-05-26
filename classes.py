@@ -13,6 +13,9 @@ class Fruta(pygame.sprite.Sprite):
         self.speed = velocidade  #velocidade que a fruta cai
         self.direction = direcao  #direção que a fruta cai
         self.rect = self.image.get_rect()
+        self.particle_timer = 0
+        self.cortada = False
+
 
         if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
@@ -21,8 +24,6 @@ class Fruta(pygame.sprite.Sprite):
         elif direcao == 'direita':
             self.rect.midright = (WIDTH + 50, random.randint(50, HEIGHT - 50))  
             
-        self.particle_timer = 0
-        self.cortada = False
 
     def update(self):
         if self.direction == 'baixo':
@@ -31,15 +32,6 @@ class Fruta(pygame.sprite.Sprite):
             self.rect.x += self.speed
         elif self.direction == 'direita':
             self.rect.x -= self.speed
-
-        # Frutas explosivas geram partículas enquanto caem
-        if self.tipo == 'explosiva':
-            now = pygame.time.get_ticks()
-            if now - self.particle_timer > 100:
-                self.particle_timer = now
-                for _ in range(3):
-                    cor = (255, 100, 0)
-                    self.groups()[0].add(Particula(self.rect.centerx, self.rect.centery, cor))
 
 
 class Bomba(pygame.sprite.Sprite):
@@ -82,21 +74,3 @@ class Particula(pygame.sprite.Sprite):
         self.life -= 1
         if self.life <= 0:
             self.kill()
-
-class Explosão(pygame.sprite.Sprite):
-    def __init__(self, center, animacao):
-        pygame.sprite.Sprite.__init__(self)
-        self.animacao = animacao
-        self.image = self.animacao[self.frame]
-        self.rect = self.image.get_rect(center=(center))
-        self.frame = 0
-        self.last_update = pygame.time.get_ticks()
-        self.frame_duration = 50  # Duração de cada frame em milissegundos
-
-    def update(self):
-        now = pygame.time.get_ticks()
-        if now - self.last_update > self.frame_duration:
-            self.last_update = now
-            self.frame += 1
-            if self.frame >= len(self.image):
-                self.kill()

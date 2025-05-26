@@ -2,7 +2,7 @@ import pygame
 from assets import load_assets
 from config import *
 import random
-from classes import Fruta, Bomba, Particula, Explosão
+from classes import Fruta, Bomba, Particula
 
 
 def tela_jogo(screen,dificuldade,assets):
@@ -81,11 +81,9 @@ def tela_jogo(screen,dificuldade,assets):
             r = random.randint(1, 100)
             if pontos >= 20:
                 if r <= 5:
-                    frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+                    frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes),))
                 elif r <= 10:
                     frutas.add(Fruta(assets['gelo'], tipo='congelada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
-                elif r <= 80:
-                    frutas.add(Fruta(assets['explosiva'], tipo='explosiva', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
                 else:
                     frutas.add(Fruta(imagem_fruta, tipo='normal', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
 
@@ -144,12 +142,6 @@ def tela_jogo(screen,dificuldade,assets):
                             vidas += 1
                             vida_estado[vidas - 1] = True
                             assets['life_sound'].play()
-                    elif fruta.tipo == 'explosiva':
-                        assets['explosiva_explode'].play()
-                        for f in frutas.copy():
-                            pontos += 5
-                            f.kill()
-                            particulas.add(Particula(f.rect.centerx, f.rect.centery, (255, 100, 0)))
                         shake_screen(screen)
                     else:
                         pontos += 5 * (2 if modo_bonus else 1)
