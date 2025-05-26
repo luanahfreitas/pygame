@@ -19,7 +19,7 @@ assets = load_assets()
 
 pygame.mixer.music.load(assets['musica_normal'])
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.set_volume(0.5)
 
 jogando = True 
 

@@ -78,11 +78,11 @@ def tela_jogo(screen,dificuldade,assets):
 
         #frutas com intervalo de tempo
         if tempo_atual - tempo_ultima_fruta > intervalo_fruta:
-            r = random.randint(1, 100)
-            if pontos >= 20:
-                if r <= 5:
+            r = random.randint(1, 135)
+            if pontos >= 80:
+                if r <= 20:
                     frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes),))
-                elif r <= 10:
+                elif r <= 50:
                     frutas.add(Fruta(assets['gelo'], tipo='congelada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
                 else:
                     frutas.add(Fruta(imagem_fruta, tipo='normal', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
@@ -136,7 +136,7 @@ def tela_jogo(screen,dificuldade,assets):
                         congelado_timer = pygame.time.get_ticks()
                         FPS_padrao = 30
                         pontos += 5 * (2 if modo_bonus else 1)
-                        assets['bonus_sound'].play()
+                        assets['freeze_sound'].play()
                     elif fruta.tipo == 'vida':
                         if vidas < 3:
                             vidas += 1
