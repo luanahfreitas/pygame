@@ -11,7 +11,7 @@ def game_over_screen(screen, pontos, assets):
     font = assets['gameover_font']
     font_pontuacao = assets['padrao_font']
 
-    background = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpeg')).convert()
+    background = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpg')).convert()
 
     #criação do botão de jogar Novamente
     botao_rect = pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 100, 400, 50)

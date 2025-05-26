@@ -79,13 +79,20 @@ def tela_jogo(screen,dificuldade,assets):
         #frutas com intervalo de tempo
         if tempo_atual - tempo_ultima_fruta > intervalo_fruta:
             r = random.randint(1, 100)
-            if r <= 5:
-                frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
-            elif r <= 10:
-                frutas.add(Fruta(assets['gelo'], tipo='congelada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+            if pontos >= 20:
+                if r <= 5:
+                    frutas.add(Fruta(assets['dourada'], tipo='dourada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+                elif r <= 10:
+                    frutas.add(Fruta(assets['gelo'], tipo='congelada', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+                elif r <= 80:
+                    frutas.add(Fruta(assets['explosiva'], tipo='explosiva', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+                else:
+                    frutas.add(Fruta(imagem_fruta, tipo='normal', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
+
             else:
                 frutas.add(Fruta(imagem_fruta, tipo='normal', velocidade=velocidade_padrao, direcao=random.choice(direcoes)))
             tempo_ultima_fruta = tempo_atual
+
 
 
         #bombas - só depois de 15s
@@ -237,7 +244,7 @@ def fade_out(screen, velocidade=10):
         pygame.time.delay(30)
 
 
-#Shake effect (ajuda de inteligencia artificial)
+#Shake effect (ajuda do Copilot)
 def shake_screen(screen, intensidade = 5, duracao = 10):
     fundo_original = screen.copy()
     for _ in range(duracao):
