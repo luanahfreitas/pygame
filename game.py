@@ -264,7 +264,7 @@ def animacao_coracao(screen,assets,i,duracao=10):
         pygame.time.delay(30)
 
 
-# Função para renderizar texto com borda (ajuda de inteligencia artificial)
+# Função para renderizar texto com borda (feito por inteligencia artificial)
 def render_text_com_borda(fonte, texto, cor_texto, cor_borda=BLACK):
     #texto original
     texto_base = fonte.render(texto, True, cor_texto)
