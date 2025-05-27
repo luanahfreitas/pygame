@@ -4,23 +4,15 @@
 
 ---
 
-## VÍDEO DE DEMONSTRAÇÃO DO JOGO
+### VÍDEO DE DEMONSTRAÇÃO DO JOGO
 
-
----
-
-##
-
-
-
-Um jogo feito em Python com Pygame onde você corta frutas, evita bombas e tenta fazer a maior pontuação possível!
+[Assista ao vídeo de como jogar (Youtube)](https://youtu.be/i1GylANJXa4)
 
 
 ##  Sobre o Projeto
 
 "*desFRUTANDO*"  é um jogo estilo Fruit Ninja desenvolvido em Python com Pygame, onde o jogador usa uma faca controlada pelo mouse para cortar frutas e evitar bombas. Conforme o tempo e pontuação aumentam, o jogo se torna mais desafiador, com novos elementos, efeitos especiais, sons e modos de dificuldade.
 
- 
 
 
 ## 🧠 Como Jogar
@@ -64,7 +56,7 @@ Um jogo feito em Python com Pygame onde você corta frutas, evita bombas e tenta
   Clique em "Jogar Novamente" para recomeçar.
 
 
-## Requisitos
+## Requisitos de instalação
 
 - Python 3.x  
 - Pygame
@@ -80,11 +72,8 @@ pip install pygame
 ## 👥 Créditos
 
 - Luana Hughes Freitas
-()
 - Gabriela Ferrão Baroni
-()
 - Laura Vendramini Paulovich Pittoli 
-()
 
 ---
 ## Divirta-se jogando!
