@@ -13,10 +13,9 @@ class Fruta(pygame.sprite.Sprite):
         self.speed = velocidade  #velocidade que a fruta cai
         self.direction = direcao  #direção que a fruta cai
         self.rect = self.image.get_rect()
-        self.particle_timer = 0
-        self.cortada = False
+        self.cortada = False  #verifica se a fruta foi cortada ou não
 
-
+        #inicializando a posição da fruta de acordo com a direção
         if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
         elif direcao == 'esquerda':
@@ -24,8 +23,8 @@ class Fruta(pygame.sprite.Sprite):
         elif direcao == 'direita':
             self.rect.midright = (WIDTH + 50, random.randint(50, HEIGHT - 50))  
             
-
     def update(self):
+        #velocidades em cada direção
         if self.direction == 'baixo':
             self.rect.y += self.speed
         elif self.direction == 'esquerda':
@@ -37,11 +36,12 @@ class Fruta(pygame.sprite.Sprite):
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, assets, velocidade=3, direcao='baixo'):
         pygame.sprite.Sprite.__init__(self)
-        self.image = assets['bomba']
-        self.speed = velocidade
+        self.image = assets['bomba']  #imagem da bomba
+        self.speed = velocidade  #velocidade que a bomba cai
         self.direction = direcao  #direção que a bomba cai
         self.rect = self.image.get_rect()
 
+        #inicializando a posição da bomba de acordo com a direção
         if direcao == 'baixo':
             self.rect.midtop = (random.randint(30, WIDTH - 30), -50)
         elif direcao == 'esquerda':
@@ -50,6 +50,7 @@ class Bomba(pygame.sprite.Sprite):
             self.rect.midright = (-50, random.randint(50, HEIGHT - 50))  
 
     def update(self):
+        #velocidades em cada direção
         if self.direction == 'baixo':
             self.rect.y += self.speed
         elif self.direction == 'esquerda':
@@ -61,16 +62,17 @@ class Bomba(pygame.sprite.Sprite):
 class Particula(pygame.sprite.Sprite):
     def __init__(self, x, y, cor):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((4, 4))
-        self.image.fill(cor)
+        self.image = pygame.Surface((4, 4)) #tamanho da partícula
+        self.image.fill(cor) #cor da partícula
         self.rect = self.image.get_rect(center=(x, y))
-        self.speed_x = random.randint(-5, 5)
-        self.speed_y = random.randint(-5, -1)
+        self.speed_x = random.randint(-5, 5)  #velocidade horizontal aleatória
+        self.speed_y = random.randint(-5, -1)  #velocidade vertical aleatória (só para cima)
         self.life = 20  #quanto tempo ela dura
 
     def update(self):
+        #atualiza a posição da partícula
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
         self.life -= 1
         if self.life <= 0:
-            self.kill()
+            self.kill()  #quando acabar a vida, a partícula é removida
