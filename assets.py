@@ -2,23 +2,23 @@ import pygame
 import os
 from config import *
 
-
+#download dos arquivos de imagem, som e fonte:
 def load_assets():
-    assets = {}
+    assets = {}  #lista dos arquivos
 
-    #imagens(frutas, faca, bomba, fundos)
+    #IMAGENS(frutas, faca, bomba, fundos)
+
     #fundos 
-    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpg')).convert()
-
+    assets['background'] = pygame.image.load(os.path.join(IMG_DIR, 'fundo.jpg')).convert()  #tela de inicio
     #modo normal
     assets['facil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho.jpg')).convert()
     assets['medio'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja.png')).convert()
     assets['dificil'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul.jpg')).convert()
-
     #modo extremo
     assets['facil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez vermelho copy.jpg')).convert()
     assets['medio_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez laranja copy.png')).convert()
     assets['dificil_extremo'] = pygame.image.load(os.path.join(IMG_DIR, 'xadrez azul copy.jpg')).convert()
+
 
     #frutas
     melancia = pygame.image.load(os.path.join(IMG_DIR, 'melancia.png')).convert_alpha()
@@ -30,13 +30,15 @@ def load_assets():
     pessego = pygame.image.load(os.path.join(IMG_DIR, 'pessego.png')).convert_alpha()
     assets['pessego'] = pygame.transform.scale(pessego, (PESSEGO_WIDTH, PESSEGO_HEIGHT))
 
-    #faca
+
+    #faca do mouse
     faca = pygame.image.load(os.path.join(IMG_DIR, 'faca.png')).convert_alpha()
     assets['faca'] = pygame.transform.scale(faca, (FACA_WIDTH, FACA_HEIGHT))
     
     #bomba
     bomba = pygame.image.load(os.path.join(IMG_DIR, 'bomba.webp')).convert_alpha()
     assets['bomba'] = pygame.transform.scale(bomba, (BOMBA_WIDTH, BOMBA_HEIGHT))
+
 
     #vida - coracoes
     cheio = pygame.image.load(os.path.join(IMG_DIR, 'vida cheia.png')).convert_alpha()
@@ -66,17 +68,5 @@ def load_assets():
     assets['musica_normal'] = os.path.join(SND_DIR, 'musica.mp3')
     assets['freeze_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'freeze.mp3'))
     assets['bonus_sound'] = pygame.mixer.Sound(os.path.join(SND_DIR, 'som dourado.wav'))
-    
-
-    #animacao
-    explosao_fruta = []
-    for i in range(4,1):
-        filename = f'magic_0{i}.png'
-        path_img = os.path.join(IMG_DIR, filename)
-        img = pygame.image.load(path_img).convert_alpha()
-        img = pygame.transform.scale(img, (32, 32))
-        explosao_fruta.append(img)
-
-    assets['explosao_fruta'] = explosao_fruta
 
     return assets

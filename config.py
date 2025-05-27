@@ -4,9 +4,6 @@ from os import *
 #CORES
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 
@@ -14,7 +11,6 @@ YELLOW = (255, 255, 0)
 #tela
 WIDTH = 700
 HEIGHT = 600
-FPS = 60
 
 #frutas
 MELANCIA_WIDTH = 110
@@ -35,7 +31,7 @@ BOMBA_WIDTH = 60
 BOMBA_HEIGHT = 60
 
 
-#IMAGENS
+#caminho dos arquivos
 BASE_DIR = path.dirname(__file__)
 IMG_DIR = path.join(path.dirname(__file__), 'assets', 'img')
 SND_DIR = path.join(path.dirname(__file__), 'assets', 'snd')
@@ -49,3 +45,4 @@ MEDIUM = 3
 HARD = 4
 DONE = 5
 
+FPS = 60
