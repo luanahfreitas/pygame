@@ -1,6 +1,6 @@
 # 🎮 desFRUTANDO
 
-# capa
+![Capa do Jogo](assets/img/capa_pygame.jpg)
 
 ---
 
