@@ -19,7 +19,7 @@
 - 🖥️ **Execute o jogo:**  
   Para abrir o jogo, após o download de todos os requisitos, de inicio no arquivo `main.py`
 
-- **Escolha o modo de jogo:**  
+- ⌨️ **Escolha o modo de jogo:**  
     Na tela inicial, clique em "Fácil", "Médio" ou "Difícil".
 
         - 🍉 *Fácil*: a fruta é uma melancia, seu tamanho facilita acertá-la.
@@ -44,7 +44,7 @@
   Perde uma vida se deixar uma fruta normal cair.
 
 
-- **Elementos especiais:**  
+- ✨ **Elementos especiais:**  
   - ⚜️ **Dourada:** Pontos em dobro por 10 segundos.
   - 🧊 **Gelo:** Deixa o jogo mais lento por 5 segundos.
 
