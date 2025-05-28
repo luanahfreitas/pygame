@@ -1,2 +1,6 @@
 __pycache__
 *.__pycache__
+
+echo 'assets/Screen Recording 2025-05-27 at 11.16.56 AM.mov' >> .gitignore
+git add .gitignore
+git commit -m "Adiciona .mov ao .gitignore"
